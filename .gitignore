@@ -17,8 +17,6 @@ build/
 npm-debug.log*
 
 # Models
-*.pth
-*.pt
 *.h5
 *.onnx
 
