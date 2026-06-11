@@ -46,18 +46,17 @@ const API_BASE = "http://localhost:8000";
 
 function NeuralNetworkBackground() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-40">
-      <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gradient-to-tr from-teal-500/10 to-transparent rounded-full blur-[100px] dark:from-teal-500/5 animate-pulse-slow" />
+      <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-[120px] dark:from-blue-500/5 animate-float" />
+      <div className="absolute bottom-10 left-1/3 w-[400px] h-[400px] bg-gradient-to-tr from-purple-500/10 to-transparent rounded-full blur-[80px] dark:from-purple-500/5" />
+      <svg className="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(20, 184, 166, 0.15)" />
-            <stop offset="100%" stopColor="rgba(0, 0, 0, 0)" />
-          </radialGradient>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
+          </pattern>
         </defs>
-        <circle cx="50%" cy="50%" r="40%" fill="url(#glow)" />
-        {/* Decorative Grid Lines */}
-        <path d="M 0,100 L 1000,100 M 0,200 L 1000,200 M 0,300 L 1000,300" stroke="rgba(20, 184, 166, 0.05)" strokeWidth="1" />
-        <path d="M 100,0 L 100,1000 M 200,0 L 200,1000 M 300,0 L 300,1000" stroke="rgba(20, 184, 166, 0.05)" strokeWidth="1" />
+        <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
     </div>
   );
@@ -65,35 +64,52 @@ function NeuralNetworkBackground() {
 
 function RetinaScanAnimation() {
   return (
-    <div className="relative w-72 h-72 md:w-96 md:h-96 mx-auto flex items-center justify-center pointer-events-none">
-      {/* Outer Pulse Rings */}
+    <div className="relative w-80 h-80 md:w-[420px] md:h-[420px] mx-auto flex items-center justify-center pointer-events-none">
+      {/* Glow aura */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/20 to-blue-500/20 rounded-full blur-[60px] opacity-60 dark:opacity-40 animate-pulse-slow" />
+      
+      {/* Outer Pulse Ring */}
       <motion.div
-        animate={{ scale: [0.9, 1.1, 0.9], opacity: [0.3, 0.6, 0.3] }}
+        animate={{ scale: [0.95, 1.05, 0.95], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute w-full h-full rounded-full border border-teal-500/20"
+        className="absolute w-full h-full rounded-full border border-teal-500/20 shadow-[0_0_20px_rgba(20,184,166,0.1)]"
       />
+      
       <motion.div
-        animate={{ scale: [1, 0.85, 1], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute w-5/6 h-5/6 rounded-full border border-blue-500/10 border-dashed"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        className="absolute w-[92%] h-[92%] rounded-full border border-dashed border-blue-500/10"
       />
-      {/* Scanning Laser Line */}
+
+      {/* Rotating Measurement Marks */}
       <motion.div
-        animate={{ translateY: ["-150px", "150px", "-150px"] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-        className="absolute w-4/5 h-[2px] bg-gradient-to-r from-transparent via-teal-400 to-transparent shadow-[0_0_8px_rgba(20,184,166,0.8)] z-10"
+        animate={{ rotate: -360 }}
+        transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+        className="absolute w-[80%] h-[80%] rounded-full border border-teal-500/25 border-t-transparent border-b-transparent"
       />
-      {/* Eye Graphic overlay */}
-      <div className="absolute w-3/4 h-3/4 rounded-full border-2 border-teal-500/30 flex items-center justify-center backdrop-blur-[2px] bg-slate-950/10">
-        <div className="w-1/2 h-1/2 rounded-full border border-blue-500/40 flex items-center justify-center">
-          <div className="w-1/3 h-1/3 rounded-full bg-gradient-to-tr from-teal-500 to-blue-600 opacity-80 blur-[2px]" />
+
+      {/* Tech concentric circles */}
+      <div className="absolute w-[70%] h-[70%] rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center bg-slate-900/10 dark:bg-slate-950/30 backdrop-blur-sm shadow-2xl relative overflow-hidden">
+        {/* Scanning laser line (vertical scan) */}
+        <motion.div
+          animate={{ top: ["0%", "100%", "0%"] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-teal-400 to-transparent shadow-[0_0_12px_rgba(20,184,166,0.8)] z-10"
+        />
+
+        {/* Inner pupil graphic */}
+        <div className="w-[50%] h-[50%] rounded-full border border-blue-500/30 flex items-center justify-center bg-slate-950/20">
+          <div className="w-[60%] h-[60%] rounded-full bg-gradient-to-tr from-teal-500/60 to-blue-600/80 shadow-[0_0_15px_rgba(20,184,166,0.5)] animate-pulse" />
         </div>
       </div>
-      {/* Concentric scan markings */}
+
+      {/* Target Crosshairs */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" stroke="rgba(20, 184, 166, 0.25)" strokeWidth="0.5" strokeDasharray="5 15" fill="none" />
-          <circle cx="50" cy="50" r="38" stroke="rgba(59, 130, 246, 0.15)" strokeWidth="0.5" strokeDasharray="30 10 10 10" fill="none" />
+        <div className="w-8 h-[1px] bg-teal-500/40 absolute" />
+        <div className="h-8 w-[1px] bg-teal-500/40 absolute" />
+        <svg className="absolute w-[95%] h-[95%] animate-spin-slow text-teal-500/30" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 15" fill="none" />
+          <circle cx="50" cy="50" r="41" stroke="currentColor" strokeWidth="0.5" strokeDasharray="40 8 10 8" fill="none" />
         </svg>
       </div>
     </div>
@@ -121,6 +137,7 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const demoSectionRef = useRef<HTMLDivElement>(null);
   const techSectionRef = useRef<HTMLDivElement>(null);
+  const resultsSectionRef = useRef<HTMLDivElement>(null);
 
   // Diagnostic Steps for active pipeline experience
   const pipelineSteps = [
@@ -286,6 +303,9 @@ export default function Home() {
       await new Promise((resolve) => setTimeout(resolve, 800));
 
       setResult(data);
+      setTimeout(() => {
+        resultsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     } catch (err: any) {
       setError(err.message || "Request failed");
     } finally {
@@ -360,217 +380,115 @@ export default function Home() {
         </header>
 
         {/* 1. HERO SECTION */}
-        <section className="relative overflow-hidden pt-12 pb-24 md:pt-20 md:pb-32 border-b border-slate-200/50 dark:border-slate-900/50">
-          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <section className="relative overflow-hidden pt-16 pb-24 md:pt-28 md:pb-36 border-b border-slate-200/50 dark:border-slate-900/50">
+          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6 text-left"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.15 }
+                }
+              }}
+              className="space-y-8 text-left"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-teal-500/10 text-teal-500 border border-teal-500/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-ping" />
-                Version 2.0: Multi-Model Explainable AI
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-                AI-Powered Glaucoma Screening <br />
-                <span className="bg-gradient-to-r from-teal-400 via-blue-500 to-teal-500 bg-clip-text text-transparent">
-                  From a Single Fundus Image
-                </span>
-              </h1>
-              <p className="text-base md:text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-xl">
-                Advanced deep learning models analyze retinal fundus photographs to assist in early glaucoma detection within seconds. Experience clinical-grade confidence metrics in real time.
-              </p>
-              <div className="flex flex-wrap gap-4 pt-2">
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: -10 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-teal-400 bg-teal-500/10 border border-teal-500/25 shadow-[0_0_15px_rgba(20,184,166,0.1)]"
+              >
+                <Activity className="w-3.5 h-3.5 animate-pulse" />
+                State-of-the-Art Deep Learning Framework
+              </motion.div>
+
+              <motion.h1
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+                }}
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05]"
+              >
+                AI-Powered <br />
+                <span className="bg-gradient-to-r from-teal-400 via-emerald-400 to-blue-500 bg-clip-text text-transparent drop-shadow-sm">
+                  Glaucoma
+                </span> Screening
+              </motion.h1>
+
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                className="text-base md:text-lg text-slate-400 leading-relaxed max-w-xl"
+              >
+                Upload a retinal fundus image for instant, clinical-grade glaucoma detection powered by multi-network decision fusion.
+              </motion.p>
+
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                className="flex flex-wrap gap-4 pt-2"
+              >
                 <button
                   onClick={() => demoSectionRef.current?.scrollIntoView({ behavior: "smooth" })}
-                  className="px-6 py-3.5 rounded-lg text-sm font-semibold bg-teal-500 text-white hover:bg-teal-600 hover:shadow-xl hover:shadow-teal-500/20 transition-all duration-300"
+                  className="px-8 py-4 rounded-xl text-sm font-bold bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-[0_0_20px_rgba(20,184,166,0.25)] hover:shadow-[0_0_30px_rgba(20,184,166,0.4)] transition-all duration-300 transform hover:-translate-y-0.5"
                 >
                   Analyze Image
                 </button>
                 <button
                   onClick={() => techSectionRef.current?.scrollIntoView({ behavior: "smooth" })}
-                  className="px-6 py-3.5 rounded-lg text-sm font-semibold border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+                  className="px-8 py-4 rounded-xl text-sm font-bold border border-slate-200 dark:border-slate-800 bg-white/5 backdrop-blur-sm hover:bg-slate-100 dark:hover:bg-slate-900 transition-all duration-300 transform hover:-translate-y-0.5"
                 >
                   Explore Technology
                 </button>
-              </div>
+              </motion.div>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="flex justify-center"
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="flex justify-center relative"
             >
               <RetinaScanAnimation />
             </motion.div>
           </div>
         </section>
 
-        {/* 2. HOW IT WORKS SECTION (SCROLL story timeline) */}
-        <section className="py-24 bg-slate-100/50 dark:bg-slate-900/30 border-b border-slate-200/50 dark:border-slate-900/50">
-          <div className="max-w-7xl mx-auto px-6 text-center">
-            <div className="space-y-4 max-w-3xl mx-auto mb-16">
-              <h2 className="text-xs uppercase tracking-widest text-teal-500 font-bold">Process Pipeline</h2>
-              <p className="text-3xl md:text-4xl font-extrabold tracking-tight">The Neural Diagnostics Journey</p>
-              <p className="text-slate-500 dark:text-slate-400">
-                Observe the automated analysis sequence as a raw fundus image processes through our validation and neural feature fusion engines.
-              </p>
-            </div>
 
-            {/* PIPELINE GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 text-left">
-              {pipelineStages.map((stage, i) => (
-                <motion.div
-                  key={stage.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col justify-between group relative overflow-hidden"
-                >
-                  <div className="absolute top-0 right-0 p-3 text-3xl font-extrabold text-slate-100 dark:text-slate-900 group-hover:text-teal-500/10 transition-colors duration-300">
-                    {String(stage.id).padStart(2, "0")}
-                  </div>
-                  <div className="space-y-3 relative z-10">
-                    <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-500 flex items-center justify-center font-bold text-sm">
-                      {stage.id}
-                    </div>
-                    <h3 className="font-bold text-base tracking-tight">{stage.name}</h3>
-                    <p className="text-xs text-slate-400 leading-normal">{stage.desc}</p>
-                  </div>
-                  {i < pipelineStages.length - 1 && (
-                    <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-slate-300 dark:text-slate-700">
-                      <ChevronRight className="w-5 h-5" />
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 3. AI ARCHITECTURE DEEP DIVE */}
-        <section ref={techSectionRef} className="py-24 border-b border-slate-200/50 dark:border-slate-900/50">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="space-y-4 max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-xs uppercase tracking-widest text-teal-500 font-bold">System Architecture</h2>
-              <p className="text-3xl md:text-4xl font-extrabold tracking-tight">Interactive AI Architecture Deep Dive</p>
-              <p className="text-slate-500 dark:text-slate-400">
-                Explore the dual-model framework combining Dense U-Net segmentations and TransUNet contextual features. Hover or click to examine.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* INTERACTIVE FLOW MAP (left 7 cols) */}
-              <div className="lg:col-span-7 space-y-4">
-                {archLayers.map((layer) => {
-                  const isActive = activeArchLayer === layer.id;
-                  return (
-                    <div
-                      key={layer.id}
-                      onMouseEnter={() => setActiveArchLayer(layer.id)}
-                      onClick={() => setActiveArchLayer(layer.id)}
-                      className={`p-4 rounded-xl border transition-all duration-300 cursor-pointer ${
-                        isActive
-                          ? "bg-teal-500/10 border-teal-500/40 shadow-lg shadow-teal-500/5 translate-x-2"
-                          : "bg-white dark:bg-slate-950/40 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg ${isActive ? "bg-teal-500 text-white" : "bg-slate-100 dark:bg-slate-900 text-slate-500"}`}>
-                            <Cpu className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">{layer.title}</span>
-                            <h4 className="font-bold text-base text-slate-800 dark:text-slate-200 leading-tight">{layer.subtitle}</h4>
-                          </div>
-                        </div>
-                        <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${isActive ? "rotate-90 text-teal-500" : ""}`} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* DETAILS BOX PANEL (right 5 cols) */}
-              <div className="lg:col-span-5 sticky top-24">
-                <AnimatePresence mode="wait">
-                  {activeArchLayer ? (
-                    <motion.div
-                      key={activeArchLayer}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-xl space-y-6"
-                    >
-                      {archLayers.find((l) => l.id === activeArchLayer) && (
-                        <>
-                          <div>
-                            <span className="text-xs uppercase font-bold tracking-wider text-teal-500">
-                              {archLayers.find((l) => l.id === activeArchLayer)?.title}
-                            </span>
-                            <h3 className="text-2xl font-bold tracking-tight mt-1 text-slate-900 dark:text-slate-100">
-                              {archLayers.find((l) => l.id === activeArchLayer)?.subtitle}
-                            </h3>
-                          </div>
-
-                          <div className="space-y-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                            <p className="font-medium text-slate-800 dark:text-slate-200">
-                              {archLayers.find((l) => l.id === activeArchLayer)?.desc}
-                            </p>
-                            <p className="border-t border-slate-100 dark:border-slate-900 pt-4">
-                              {archLayers.find((l) => l.id === activeArchLayer)?.details}
-                            </p>
-                          </div>
-
-                          <div className="p-3 bg-slate-50 dark:bg-slate-900/40 rounded-lg flex items-center gap-3 text-xs text-slate-400">
-                            <Info className="w-4 h-4 text-teal-500 flex-shrink-0" />
-                            Clicking details toggles data-flow parameters.
-                          </div>
-                        </>
-                      )}
-                    </motion.div>
-                  ) : (
-                    <div className="p-6 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-950/10 text-center py-20 text-slate-400">
-                      <Sliders className="w-8 h-8 mx-auto mb-3 text-slate-300" />
-                      <p>Select any architecture layer from the left to drill down into its mechanics.</p>
-                    </div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* 4. LIVE ANALYSIS DEMO */}
-        <section ref={demoSectionRef} className="py-24 bg-slate-100/30 dark:bg-slate-900/10 border-b border-slate-200/50 dark:border-slate-900/50">
-          <div className="max-w-7xl mx-auto px-6">
+        <section ref={demoSectionRef} className="py-24 relative overflow-hidden bg-slate-100/10 dark:bg-slate-950/20 border-b border-slate-200/50 dark:border-slate-900/50">
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="space-y-4 max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-xs uppercase tracking-widest text-teal-500 font-bold">Diagnostic Demo</h2>
-              <p className="text-3xl md:text-4xl font-extrabold tracking-tight">Run Live Retina Analysis</p>
-              <p className="text-slate-500 dark:text-slate-400">
+              <h2 className="text-xs uppercase tracking-widest text-teal-400 font-bold">Diagnostic Console</h2>
+              <p className="text-3xl md:text-5xl font-extrabold tracking-tight">Run Live Retina Analysis</p>
+              <p className="text-slate-400 max-w-xl mx-auto text-sm">
                 Upload your own clinical fundus image or run a diagnostics test immediately using our preloaded patient sample.
               </p>
             </div>
 
             {/* INTERACTIVE DEMO CONTAINER */}
-            <div className="max-w-4xl mx-auto bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="max-w-4xl mx-auto bg-white/80 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 rounded-3xl overflow-hidden shadow-2xl">
               {error && (
-                <div className="bg-red-50 dark:bg-red-950/20 border-b border-red-200 dark:border-red-900/50 p-4 flex items-center justify-between text-red-800 dark:text-red-400">
+                <div className="bg-red-500/10 border-b border-red-500/20 p-4 flex items-center justify-between text-red-600 dark:text-red-400">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                     <span className="text-sm font-medium">{error}</span>
                   </div>
-                  <button onClick={() => setError(null)} className="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md">
+                  <button onClick={() => setError(null)} className="p-1 hover:bg-red-500/20 rounded-md transition-colors">
                     <X className="w-4 h-4" />
                   </button>
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-800">
+              <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200/80 dark:divide-slate-800/85">
                 {/* UPLOADER / SAMPLE */}
                 <div className="p-8 space-y-6">
                   <div>
@@ -584,9 +502,9 @@ export default function Home() {
                     onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                     onDragLeave={() => setDragOver(false)}
                     onClick={() => fileInputRef.current?.click()}
-                    className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 ${
+                    className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 relative group overflow-hidden ${
                       dragOver
-                        ? "border-teal-500 bg-teal-500/5"
+                        ? "border-teal-500 bg-teal-500/5 shadow-[0_0_20px_rgba(20,184,166,0.15)]"
                         : "border-slate-200 dark:border-slate-800 hover:border-teal-500/40 hover:bg-slate-50 dark:hover:bg-slate-900/30"
                     }`}
                   >
@@ -601,13 +519,13 @@ export default function Home() {
                     {preview ? (
                       <div className="space-y-4">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={preview} alt="Selected retina preview" className="max-h-40 mx-auto rounded-lg shadow-md border dark:border-slate-800" />
-                        <div className="text-xs text-slate-400 truncate max-w-xs mx-auto">{file?.name}</div>
+                        <img src={preview} alt="Selected retina preview" className="max-h-40 mx-auto rounded-xl shadow-md border dark:border-slate-800 object-cover" />
+                        <div className="text-xs text-slate-400 truncate max-w-xs mx-auto font-mono">{file?.name}</div>
                       </div>
                     ) : (
                       <div className="space-y-3 py-6">
-                        <Upload className="w-8 h-8 text-slate-400 mx-auto" />
-                        <p className="text-sm text-slate-500 dark:text-slate-400">Drag & drop fundus image, or browse local files</p>
+                        <Upload className="w-8 h-8 text-slate-400 mx-auto group-hover:text-teal-500 transition-colors" />
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Drag & drop fundus image, or <span className="text-teal-500 font-semibold underline decoration-2 decoration-teal-500/30">browse</span></p>
                         <p className="text-[10px] text-slate-400">Supports standard JPEG or PNG formats</p>
                       </div>
                     )}
@@ -618,17 +536,18 @@ export default function Home() {
                     <span className="text-xs font-semibold text-slate-400 block">Or load test validation dataset:</span>
                     <button
                       onClick={loadSampleImage}
-                      className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-left hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors flex items-center gap-3 group"
+                      className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-left hover:bg-slate-50 dark:hover:bg-slate-900 transition-all flex items-center gap-3 group bg-white/50 dark:bg-slate-950/20"
                     >
-                      <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900 rounded overflow-hidden flex-shrink-0 border dark:border-slate-800">
+                      <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900 rounded-lg overflow-hidden flex-shrink-0 border dark:border-slate-800 relative">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src="/sample1.png" alt="Sample fundus thumbnail" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-bold text-xs truncate">Patient Ref: BEH-18</h4>
-                        <p className="text-[10px] text-slate-400">Retinal Fundus Image • 232 KB</p>
+                        <p className="text-[10px] text-slate-400 font-mono">Retinal Fundus Image • 232 KB</p>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform group-hover:text-teal-500" />
                     </button>
                   </div>
                 </div>
@@ -645,12 +564,12 @@ export default function Home() {
                         <div className="relative pt-1">
                           <div className="flex mb-2 items-center justify-between">
                             <div>
-                              <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full bg-teal-500/10 text-teal-500">
+                              <span className="text-xs font-semibold inline-block py-1 px-2.5 uppercase rounded-full bg-teal-500/15 text-teal-400">
                                 Processing
                               </span>
                             </div>
                             <div className="text-right">
-                              <span className="text-xs font-semibold inline-block text-teal-500">
+                              <span className="text-xs font-semibold inline-block text-teal-400 font-mono">
                                 {Math.round(analysisProgress)}%
                               </span>
                             </div>
@@ -660,13 +579,13 @@ export default function Home() {
                               initial={{ width: "0%" }}
                               animate={{ width: `${analysisProgress}%` }}
                               transition={{ duration: 0.1 }}
-                              className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teal-500"
+                              className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-teal-500 to-blue-500"
                             />
                           </div>
                         </div>
 
                         {/* Pipeline checklist */}
-                        <div className="space-y-2 border-t dark:border-slate-800 pt-4">
+                        <div className="space-y-2 border-t dark:border-slate-800/80 pt-4">
                           {pipelineSteps.map((step, idx) => {
                             const isDone = idx < currentPipelineStep;
                             const isCurrent = idx === currentPipelineStep;
@@ -682,7 +601,7 @@ export default function Home() {
                                 }`}
                               >
                                 {isDone ? (
-                                  <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                                  <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-teal-500" />
                                 ) : isCurrent ? (
                                   <Loader2 className="w-3.5 h-3.5 mt-0.5 animate-spin flex-shrink-0 text-teal-500" />
                                 ) : (
@@ -700,22 +619,21 @@ export default function Home() {
                     )}
 
                     {!analyzing && !result && (
-                      <div className="p-8 border border-dashed dark:border-slate-800 rounded-2xl text-center text-slate-400 text-xs py-14">
+                      <div className="p-8 border border-dashed dark:border-slate-800 rounded-2xl text-center text-slate-400 text-xs py-14 bg-slate-50/50 dark:bg-slate-950/20">
                         <Terminal className="w-6 h-6 mx-auto mb-2 text-slate-500" />
                         Select an image to activate the diagnostic pipeline controller.
                       </div>
                     )}
 
                     {result && (
-                      <div className="p-4 bg-teal-500/5 border border-teal-500/20 rounded-2xl space-y-3">
-                        <div className="flex items-center gap-2 text-teal-500 text-sm font-bold">
-                          <CheckCircle2 className="w-4 h-4" />
+                      <div className="p-4 bg-teal-500/5 border border-teal-500/25 rounded-2xl space-y-3 shadow-[0_0_15px_rgba(20,184,166,0.05)]">
+                        <div className="flex items-center gap-2 text-teal-400 text-sm font-bold">
+                          <CheckCircle2 className="w-4 h-4 text-teal-400" />
                           Screening Report Compiled
                         </div>
                         <p className="text-xs text-slate-400 leading-normal">
                           Inference finished in 1.45 seconds. Model weights resolved local boundaries with high validation markers.
                         </p>
-
                       </div>
                     )}
                   </div>
@@ -724,7 +642,7 @@ export default function Home() {
                     <button
                       onClick={runAnalysis}
                       disabled={!file || analyzing}
-                      className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-teal-500 hover:bg-teal-600 disabled:bg-slate-100 disabled:text-slate-400 dark:disabled:bg-slate-900/60 dark:disabled:text-slate-700 disabled:cursor-not-allowed transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/10"
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 disabled:from-slate-100 disabled:to-slate-100 disabled:text-slate-400 dark:disabled:from-slate-900/60 dark:disabled:to-slate-900/60 dark:disabled:text-slate-700 disabled:cursor-not-allowed transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/20 active:translate-y-[1px]"
                     >
                       {analyzing ? (
                         <>
@@ -743,10 +661,10 @@ export default function Home() {
                           setPreview(null);
                           setResult(null);
                         }}
-                        className="px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
+                        className="px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors flex items-center justify-center"
                         title="Clear analysis"
                       >
-                        <RefreshCw className="w-4 h-4 text-slate-400" />
+                        <RefreshCw className="w-4 h-4 text-slate-400 hover:rotate-180 transition-transform duration-500" />
                       </button>
                     )}
                   </div>
@@ -760,48 +678,49 @@ export default function Home() {
         <AnimatePresence>
           {result && (
             <motion.section
+              ref={resultsSectionRef}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8 }}
-              className="py-24 border-b border-slate-200/50 dark:border-slate-900/50"
+              className="py-24 border-b border-slate-200/50 dark:border-slate-900/50 relative overflow-hidden"
             >
-              <div className="max-w-7xl mx-auto px-6">
+              <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="space-y-4 max-w-3xl mx-auto text-center mb-16">
-                  <h2 className="text-xs uppercase tracking-widest text-teal-500 font-bold">Diagnostic Results</h2>
-                  <p className="text-3xl md:text-4xl font-extrabold tracking-tight">Active Screening Dashboard</p>
-                  <p className="text-slate-500 dark:text-slate-400">
+                  <h2 className="text-xs uppercase tracking-widest text-teal-400 font-bold">Diagnostic Results</h2>
+                  <p className="text-3xl md:text-5xl font-extrabold tracking-tight">Active Screening Dashboard</p>
+                  <p className="text-slate-400 max-w-xl mx-auto text-sm">
                     Comprehensive predictions from local inference pipelines. Quantitative scoring fused through multi-network evaluation.
                   </p>
                 </div>
 
                 {/* SUMMARY BANNER */}
-                <div className={`mb-10 p-5 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-6 ${
+                <div className={`mb-12 p-6 rounded-3xl border backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-300 shadow-xl ${
                   result.risk_band === "High Risk"
-                    ? "bg-red-500/5 border-red-500/20 text-red-500"
+                    ? "bg-red-500/5 border-red-500/20 text-red-500 shadow-red-500/5"
                     : result.risk_band === "Borderline"
-                    ? "bg-amber-500/5 border-amber-500/20 text-amber-500"
-                    : "bg-teal-500/5 border-teal-500/20 text-teal-500"
+                    ? "bg-amber-500/5 border-amber-500/20 text-amber-500 shadow-amber-500/5"
+                    : "bg-teal-500/5 border-teal-500/20 text-teal-500 shadow-teal-500/5"
                 }`}>
                   <div className="flex items-center gap-4 text-left">
-                    <div className="p-3 rounded-full bg-current/10">
-                      <AlertTriangle className="w-6 h-6" />
+                    <div className="p-3.5 rounded-2xl bg-current/10 flex items-center justify-center">
+                      <AlertTriangle className="w-6 h-6 animate-pulse" />
                     </div>
                     <div>
-                      <h4 className="font-extrabold text-lg">Diagnostics Result: {result.diagnosis_class}</h4>
-                      <p className="text-xs text-slate-400 mt-1">
+                      <h4 className="font-extrabold text-xl tracking-tight">Diagnostics Result: {result.diagnosis_class}</h4>
+                      <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-normal">
                         Fusion metric evaluates the confidence threshold of deep pixel segmentations against structural DenseNet classifications.
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs uppercase font-semibold tracking-wider text-slate-400">Risk Band:</span>
-                    <span className={`px-4 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider ${
+                    <span className="text-xs uppercase font-bold tracking-wider text-slate-400">Risk Band:</span>
+                    <span className={`px-5 py-2 rounded-full font-extrabold text-xs uppercase tracking-wider shadow-md ${
                       result.risk_band === "High Risk"
-                        ? "bg-red-500 text-white"
+                        ? "bg-red-500 text-white shadow-red-500/20"
                         : result.risk_band === "Borderline"
-                        ? "bg-amber-500 text-white"
-                        : "bg-teal-500 text-white"
+                        ? "bg-amber-500 text-white shadow-amber-500/20"
+                        : "bg-teal-500 text-white shadow-teal-500/20"
                     }`}>
                       {result.risk_band}
                     </span>
@@ -810,73 +729,89 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
                   {/* GAUGE & DECISION THRESHOLD */}
-                  <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col items-center justify-center text-center space-y-4">
-                    <h3 className="font-bold text-sm text-slate-400 uppercase tracking-widest">Aggregated Risk Index</h3>
+                  <div className="p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm flex flex-col items-center justify-center text-center space-y-6 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300">
+                    <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest">Aggregated Risk Index</h3>
                     
                     {/* Simplified Custom Ring Chart */}
-                    <div className="relative w-40 h-40 flex items-center justify-center">
+                    <div className="relative w-44 h-44 flex items-center justify-center">
                       <svg className="w-full h-full transform -rotate-90">
-                        <circle cx="80" cy="80" r="70" stroke="rgba(20,184,166,0.08)" strokeWidth="12" fill="transparent" />
+                        <circle cx="88" cy="88" r="76" stroke="rgba(20,184,166,0.08)" strokeWidth="12" fill="transparent" />
                         <motion.circle
-                          cx="80" cy="80" r="70"
+                          cx="88"
+                          cy="88"
+                          r="76"
                           stroke={result.fusion_score >= 0.57 ? "#ef4444" : result.fusion_score >= 0.4 ? "#f59e0b" : "#14b8a6"}
                           strokeWidth="12"
                           fill="transparent"
-                          strokeDasharray={2 * Math.PI * 70}
-                          initial={{ strokeDashoffset: 2 * Math.PI * 70 }}
-                          animate={{ strokeDashoffset: 2 * Math.PI * 70 * (1 - result.fusion_score) }}
+                          strokeDasharray={2 * Math.PI * 76}
+                          initial={{ strokeDashoffset: 2 * Math.PI * 76 }}
+                          animate={{ strokeDashoffset: 2 * Math.PI * 76 * (1 - result.fusion_score) }}
                           transition={{ duration: 1.5, ease: "easeOut" }}
                           strokeLinecap="round"
                         />
                       </svg>
                       <div className="absolute text-center">
-                        <span className="text-4xl font-extrabold tracking-tight">{result.risk_score}%</span>
-                        <span className="block text-[10px] text-slate-400 uppercase mt-0.5">Risk Score</span>
+                        <span className="text-4xl font-black tracking-tight">{result.risk_score}%</span>
+                        <span className="block text-[10px] text-slate-400 uppercase tracking-widest mt-1">Risk Score</span>
                       </div>
                     </div>
 
-                    <div className="text-xs text-slate-400">
-                      Decision Threshold set to <span className="font-bold">{result.decision_threshold}</span>. Fusion score is <span className="font-bold">{result.fusion_score.toFixed(3)}</span>.
+                    <div className="text-xs text-slate-400 leading-normal">
+                      Decision Threshold set to <span className="font-bold text-slate-700 dark:text-slate-200">{result.decision_threshold}</span>. <br />
+                      Fusion score is <span className="font-bold text-slate-700 dark:text-slate-200">{result.fusion_score.toFixed(3)}</span>.
                     </div>
                   </div>
 
                   {/* VCDR CARD */}
-                  <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col justify-between space-y-6">
+                  <div className="p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm flex flex-col justify-between space-y-6 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300">
                     <div>
-                      <h3 className="font-bold text-sm text-slate-400 uppercase tracking-widest">Vertical Cup-to-Disc Ratio</h3>
-                      <div className="text-5xl font-extrabold tracking-tight mt-4">{result.vcdr_value.toFixed(4)}</div>
-                      <p className="text-xs text-slate-400 mt-2">
+                      <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest">Vertical Cup-to-Disc Ratio</h3>
+                      <div className="text-6xl font-black tracking-tight mt-6 bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">{result.vcdr_value.toFixed(4)}</div>
+                      <p className="text-xs text-slate-400 mt-4 leading-relaxed">
                         Calculated by mapping vertical segments of the segmented cup boundaries over the total diameter of the optic disc.
                       </p>
                     </div>
-                    <div className="h-2 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-teal-500 rounded-full"
-                        style={{ width: `${Math.min(100, (result.vcdr_value / 0.9) * 100)}%` }}
-                      />
+                    <div>
+                      <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase mb-1.5 font-mono">
+                        <span>Min (0.1)</span>
+                        <span>VCDR: {result.vcdr_value.toFixed(2)}</span>
+                        <span>Max (0.9)</span>
+                      </div>
+                      <div className="h-2.5 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden p-[2px]">
+                        <div
+                          className="h-full bg-gradient-to-r from-teal-500 to-teal-400 rounded-full shadow-[0_0_10px_rgba(20,184,166,0.5)]"
+                          style={{ width: `${Math.min(100, (result.vcdr_value / 0.9) * 100)}%` }}
+                        />
+                      </div>
                     </div>
                   </div>
 
                   {/* DEEP PROBABILITY CARD */}
-                  <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col justify-between space-y-6">
+                  <div className="p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm flex flex-col justify-between space-y-6 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300">
                     <div>
-                      <h3 className="font-bold text-sm text-slate-400 uppercase tracking-widest">Model Confidence</h3>
-                      <div className="text-5xl font-extrabold tracking-tight mt-4">{(result.p_glaucoma * 100).toFixed(1)}%</div>
-                      <p className="text-xs text-slate-400 mt-2">
+                      <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest">Model Confidence</h3>
+                      <div className="text-6xl font-black tracking-tight mt-6 bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">{(result.p_glaucoma * 100).toFixed(1)}%</div>
+                      <p className="text-xs text-slate-400 mt-4 leading-relaxed">
                         DenseNet-121 classification output indicating raw statistical likelihood of glaucomatous damage based on structural appearance.
                       </p>
                     </div>
-                    <div className="h-2 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-blue-500 rounded-full"
-                        style={{ width: `${result.p_glaucoma * 100}%` }}
-                      />
+                    <div>
+                      <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase mb-1.5 font-mono">
+                        <span>Confidence level</span>
+                        <span>{(result.p_glaucoma * 100).toFixed(0)}%</span>
+                      </div>
+                      <div className="h-2.5 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden p-[2px]">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                          style={{ width: `${result.p_glaucoma * 100}%` }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* 6. EXPLAINABLE AI (XAI) COMPARE SECTION */}
-                <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 space-y-8">
+                <div className="bg-white/50 dark:bg-slate-900/20 border border-slate-200 dark:border-slate-800/80 rounded-3xl p-8 space-y-8 shadow-md">
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div>
                       <h3 className="text-xl font-bold tracking-tight">Explainable AI (XAI) Comparison Engine</h3>
@@ -884,10 +819,10 @@ export default function Home() {
                     </div>
                     
                     {/* Toggle Slider Type */}
-                    <div className="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-lg border dark:border-slate-800">
+                    <div className="flex bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border dark:border-slate-800/80">
                       <button
                         onClick={() => setSliderType("mask")}
-                        className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 ${
                           sliderType === "mask" ? "bg-teal-500 text-white shadow" : "text-slate-400 hover:text-slate-200"
                         }`}
                       >
@@ -895,7 +830,7 @@ export default function Home() {
                       </button>
                       <button
                         onClick={() => setSliderType("gradcam")}
-                        className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 ${
                           sliderType === "gradcam" ? "bg-teal-500 text-white shadow" : "text-slate-400 hover:text-slate-200"
                         }`}
                       >
@@ -975,166 +910,296 @@ export default function Home() {
         </AnimatePresence>
 
         {/* 7. TECHNOLOGY STACK SECTION */}
-        <section className="py-24 bg-slate-100/30 dark:bg-slate-900/10 border-b border-slate-200/50 dark:border-slate-900/50">
-          <div className="max-w-7xl mx-auto px-6">
+        <section ref={techSectionRef} className="py-24 relative overflow-hidden bg-slate-100/10 dark:bg-slate-950/20 border-b border-slate-200/50 dark:border-slate-900/50">
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="space-y-4 max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-xs uppercase tracking-widest text-teal-500 font-bold">Tech Stack</h2>
-              <p className="text-3xl md:text-4xl font-extrabold tracking-tight">Enterprise & Deep Learning Foundations</p>
-              <p className="text-slate-500 dark:text-slate-400">
+              <h2 className="text-xs uppercase tracking-widest text-teal-400 font-bold">Tech Stack</h2>
+              <p className="text-3xl md:text-5xl font-extrabold tracking-tight">Enterprise & Deep Learning Foundations</p>
+              <p className="text-slate-400 max-w-xl mx-auto text-sm">
                 A highly performant architecture utilizing lightweight client rendering models backed by GPU inference servers.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {/* Card 1: Frontend */}
-              <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 space-y-4">
+              <motion.div
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm space-y-4 hover:border-teal-500/30 transition-all duration-300 shadow-sm"
+              >
                 <div className="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center">
                   <Brain className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-lg">Frontend Core</h3>
-                <ul className="text-xs text-slate-400 space-y-2">
+                <ul className="text-xs text-slate-400 space-y-2 font-mono">
                   <li>• Next.js 14 Framework</li>
                   <li>• TypeScript Static Safety</li>
                   <li>• Tailwind Styling Engine</li>
                   <li>• Framer Motion UI Animations</li>
                 </ul>
-              </div>
+              </motion.div>
 
               {/* Card 2: Backend */}
-              <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 space-y-4">
+              <motion.div
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm space-y-4 hover:border-blue-500/30 transition-all duration-300 shadow-sm"
+              >
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center">
                   <Database className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-lg">Inference API</h3>
-                <ul className="text-xs text-slate-400 space-y-2">
+                <ul className="text-xs text-slate-400 space-y-2 font-mono">
                   <li>• FastAPI Framework</li>
                   <li>• Python 3.11 Backend</li>
                   <li>• Uvicorn ASGI Server</li>
                   <li>• Real-Time CORS Middleware</li>
                 </ul>
-              </div>
+              </motion.div>
 
               {/* Card 3: Models */}
-              <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 space-y-4">
+              <motion.div
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm space-y-4 hover:border-teal-500/30 transition-all duration-300 shadow-sm"
+              >
                 <div className="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center">
                   <Cpu className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-lg">Model Architecture</h3>
-                <ul className="text-xs text-slate-400 space-y-2">
+                <ul className="text-xs text-slate-400 space-y-2 font-mono">
                   <li>• Dense U-Net Segmentation</li>
-                  <li>• TransUNet Transformer context</li>
+                  <li>• TransUNet Transformer</li>
                   <li>• DenseNet-121 Classifier</li>
                   <li>• Feature-level Decision Fusion</li>
                 </ul>
-              </div>
+              </motion.div>
 
               {/* Card 4: Infrastructure */}
-              <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 space-y-4">
+              <motion.div
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm space-y-4 hover:border-blue-500/30 transition-all duration-300 shadow-sm"
+              >
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center">
                   <Shield className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-lg">Infrastructure</h3>
-                <ul className="text-xs text-slate-400 space-y-2">
+                <ul className="text-xs text-slate-400 space-y-2 font-mono">
                   <li>• PyTorch Framework</li>
-                  <li>• OpenCV Image Preprocessing</li>
+                  <li>• OpenCV Preprocessing</li>
                   <li>• GPU Inference Acceleration</li>
                   <li>• Dockerized Microservices</li>
                 </ul>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
 
         {/* 8. CLINICAL RELIABILITY SECTION */}
-        <section className="py-24 border-b border-slate-200/50 dark:border-slate-900/50">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="py-24 border-b border-slate-200/50 dark:border-slate-900/50 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="space-y-4 max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-xs uppercase tracking-widest text-teal-500 font-bold">Clinical Metrics</h2>
-              <p className="text-3xl md:text-4xl font-extrabold tracking-tight">Clinically Validated Reliability</p>
-              <p className="text-slate-500 dark:text-slate-400">
+              <h2 className="text-xs uppercase tracking-widest text-teal-400 font-bold">Clinical Metrics</h2>
+              <p className="text-3xl md:text-5xl font-extrabold tracking-tight">Clinically Validated Reliability</p>
+              <p className="text-slate-400 max-w-xl mx-auto text-sm">
                 Validated using standard benchmark datasets (REFUGE, ORIGA, ACRIMA) with high correlation coefficients against expert consensus.
               </p>
             </div>
 
             {/* STATS COUNT */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center mb-12">
-              <div className="p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                <div className="text-4xl font-extrabold text-teal-500">96.4%</div>
-                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mt-2">Accuracy</div>
-              </div>
-              <div className="p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                <div className="text-4xl font-extrabold text-teal-500">95.8%</div>
-                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mt-2">Precision</div>
-              </div>
-              <div className="p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                <div className="text-4xl font-extrabold text-teal-500">94.2%</div>
-                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mt-2">Recall</div>
-              </div>
-              <div className="p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                <div className="text-4xl font-extrabold text-teal-500">95.0%</div>
-                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mt-2">F1 Score</div>
-              </div>
-              <div className="p-6 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                <div className="text-4xl font-extrabold text-teal-500">0.982</div>
-                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mt-2">AUC Metrics</div>
-              </div>
+              {[
+                { label: "Accuracy", val: "88.0%" },
+                { label: "Precision", val: "88.0%" },
+                { label: "Recall", val: "87.0%" },
+                { label: "F1 Score", val: "88.0%" },
+                { label: "AUC Metrics", val: "0.938" },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className="p-6 rounded-2xl bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm border border-slate-200 dark:border-slate-800/80 shadow-sm"
+                >
+                  <div className="text-4xl font-black bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">{stat.val}</div>
+                  <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mt-2 font-mono">{stat.label}</div>
+                </motion.div>
+              ))}
             </div>
 
-            {/* BENCHMARK COMPARISON BAR CHART */}
-            <div className="max-w-2xl mx-auto p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 space-y-6">
-              <h3 className="font-bold text-sm text-slate-400 uppercase tracking-widest text-center">Diagnostics Accuracy vs Baseline</h3>
-              <div className="space-y-4">
-                {/* GlaucoScan */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="font-bold">GlaucoScan AI (Fusion Frame)</span>
-                    <span className="font-semibold text-teal-500">96.4%</span>
-                  </div>
-                  <div className="h-4 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: "0%" }}
-                      whileInView={{ width: "96.4%" }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1 }}
-                      className="h-full bg-gradient-to-r from-teal-500 to-blue-500"
-                    />
-                  </div>
-                </div>
-
-                {/* DenseNet Only */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-slate-500">DenseNet-121 Classifier (Standalone)</span>
-                    <span className="font-semibold text-slate-400">91.2%</span>
-                  </div>
-                  <div className="h-4 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: "0%" }}
-                      whileInView={{ width: "91.2%" }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1 }}
-                      className="h-full bg-slate-400 dark:bg-slate-700"
-                    />
-                  </div>
-                </div>
-
-                {/* U-Net Only */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-slate-500">U-Net Segmentations (Standalone VCDR)</span>
-                    <span className="font-semibold text-slate-400">87.5%</span>
-                  </div>
-                  <div className="h-4 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: "0%" }}
-                      whileInView={{ width: "87.5%" }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1 }}
-                      className="h-full bg-slate-300 dark:bg-slate-800"
-                    />
-                  </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* PERFORMANCE REPORT */}
+              <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm shadow-sm">
+                <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest text-center mb-6 font-mono">Final Late Fusion Performance Report</h3>
+                <div className="overflow-x-auto rounded-xl border border-slate-200/60 dark:border-slate-800">
+                  <table className="w-full text-sm text-left text-slate-500 dark:text-slate-400">
+                    <thead className="text-xs uppercase bg-slate-50 dark:bg-slate-950 border-b border-slate-200/60 dark:border-slate-800 font-mono">
+                      <tr>
+                        <th className="px-4 py-3">Class</th>
+                        <th className="px-4 py-3 text-right">Precision</th>
+                        <th className="px-4 py-3 text-right">Recall</th>
+                        <th className="px-4 py-3 text-right">F1-Score</th>
+                        <th className="px-4 py-3 text-right">Support</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                      <tr>
+                        <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">Healthy</td>
+                        <td className="px-4 py-3 text-right">0.90</td>
+                        <td className="px-4 py-3 text-right">0.92</td>
+                        <td className="px-4 py-3 text-right">0.91</td>
+                        <td className="px-4 py-3 text-right">1505</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">Glaucoma</td>
+                        <td className="px-4 py-3 text-right">0.86</td>
+                        <td className="px-4 py-3 text-right">0.83</td>
+                        <td className="px-4 py-3 text-right">0.85</td>
+                        <td className="px-4 py-3 text-right">952</td>
+                      </tr>
+                    </tbody>
+                    <tfoot className="border-t-2 border-slate-200/60 dark:border-slate-800 bg-slate-50/55 dark:bg-slate-950/60 font-mono">
+                      <tr>
+                        <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">Macro Avg</td>
+                        <td className="px-4 py-3 text-right font-semibold">0.88</td>
+                        <td className="px-4 py-3 text-right font-semibold">0.87</td>
+                        <td className="px-4 py-3 text-right font-semibold">0.88</td>
+                        <td className="px-4 py-3 text-right font-semibold">2457</td>
+                      </tr>
+                    </tfoot>
+                  </table>
                 </div>
               </div>
+
+              {/* CONFUSION MATRIX */}
+              <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm shadow-sm flex flex-col items-center justify-center">
+                <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest text-center mb-6 font-mono">Late Fusion Confusion Matrix</h3>
+                <div className="grid grid-cols-3 gap-2 text-center text-sm w-full max-w-sm">
+                  {/* Header Row */}
+                  <div className="col-span-1"></div>
+                  <div className="col-span-1 font-bold text-slate-500 uppercase text-[9px] tracking-wider font-mono">Pred Healthy</div>
+                  <div className="col-span-1 font-bold text-slate-500 uppercase text-[9px] tracking-wider font-mono">Pred Glaucoma</div>
+
+                  {/* Healthy Row */}
+                  <div className="font-bold text-slate-500 flex items-center justify-end pr-2 uppercase text-[9px] tracking-wider font-mono">Actual Healthy</div>
+                  <div className="bg-gradient-to-br from-teal-500 to-emerald-600 text-white p-4 rounded-xl flex items-center justify-center font-bold shadow-md shadow-teal-500/10 font-mono">1379</div>
+                  <div className="bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-400 p-4 rounded-xl flex items-center justify-center border border-slate-200/50 dark:border-slate-850 font-mono">126</div>
+
+                  {/* Glaucoma Row */}
+                  <div className="font-bold text-slate-500 flex items-center justify-end pr-2 uppercase text-[9px] tracking-wider font-mono">Actual Glaucoma</div>
+                  <div className="bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-400 p-4 rounded-xl flex items-center justify-center border border-slate-200/50 dark:border-slate-850 font-mono">160</div>
+                  <div className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-4 rounded-xl flex items-center justify-center font-bold shadow-md shadow-blue-500/10 font-mono">792</div>
+                </div>
+                <div className="mt-6 text-xs font-bold bg-teal-500/10 text-teal-500 dark:text-teal-400 px-4 py-2.5 rounded-xl border border-teal-500/20 shadow-sm font-mono">
+                  Late Fusion Analysis complete! Fusion AUC achieved: 0.9383
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. HOW IT WORKS SECTION (SCROLL story timeline) */}
+        <section className="py-24 border-b border-slate-200/50 dark:border-slate-900/50 relative overflow-hidden bg-slate-100/10 dark:bg-slate-950/20">
+          <div className="max-w-5xl mx-auto px-6">
+            <div className="space-y-4 max-w-3xl mx-auto text-center mb-20">
+              <h2 className="text-xs uppercase tracking-widest text-teal-400 font-bold">Process Pipeline</h2>
+              <p className="text-3xl md:text-5xl font-extrabold tracking-tight">The Neural Diagnostics Journey</p>
+              <p className="text-slate-400 max-w-xl mx-auto text-sm">
+                Watch how a raw retina photo goes from ingestion to multi-stage tensor computations to compile an audit-ready screening report.
+              </p>
+            </div>
+
+            {/* STAGE TIMELINE VERTICAL */}
+            <div className="relative border-l border-slate-200 dark:border-slate-800 ml-4 md:ml-8 space-y-12 pb-4">
+              {pipelineStages.map((stage, i) => (
+                <motion.div
+                  key={stage.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.5, delay: i * 0.05 }}
+                  className="relative pl-8 md:pl-12 group"
+                >
+                  {/* Glowing timeline node */}
+                  <div className="absolute -left-[13px] top-1.5 w-6 h-6 rounded-full border-2 border-teal-500 bg-slate-950 flex items-center justify-center shadow-[0_0_10px_rgba(20,184,166,0.3)] group-hover:scale-110 transition-transform duration-300">
+                    <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950/30 backdrop-blur-sm hover:border-teal-500/30 transition-all duration-300 shadow-sm hover:shadow-[0_0_20px_rgba(20,184,166,0.05)]">
+                    <div className="md:col-span-1 flex items-center gap-3">
+                      <span className="text-3xl font-black text-slate-200 dark:text-slate-900 group-hover:text-teal-500/20 transition-colors duration-300">
+                        {String(stage.id).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block font-mono">Stage {stage.id}</span>
+                        <h4 className="font-bold text-base text-slate-900 dark:text-slate-100">{stage.name}</h4>
+                      </div>
+                    </div>
+                    <div className="md:col-span-3 flex items-center text-sm text-slate-500 dark:text-slate-400">
+                      {stage.desc}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 3. AI ARCHITECTURE DEEP DIVE */}
+        <section ref={techSectionRef} className="py-24 border-b border-slate-200/50 dark:border-slate-900/50">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="space-y-4 max-w-3xl mx-auto text-center mb-16">
+              <h2 className="text-xs uppercase tracking-widest text-teal-500 font-bold">System Architecture</h2>
+              <p className="text-3xl md:text-4xl font-extrabold tracking-tight">System Architecture Flow</p>
+              <p className="text-slate-500 dark:text-slate-400">
+                Overview of the data flow from frontend UI to the backend multi-stage ML pipeline and deep learning models.
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto bg-slate-950 p-6 md:p-8 rounded-3xl border border-slate-800 shadow-2xl overflow-x-auto">
+              <pre className="text-teal-400 font-mono text-[10px] sm:text-xs md:text-sm leading-relaxed whitespace-pre font-bold mx-auto w-fit">
+{`┌─────────────────────────────────────────────────────────────┐
+│                      FRONTEND (Next.js)                     │
+│                    http://localhost:3000                    │
+│                                                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐   │
+│  │  File Upload │  │ XAI Compare  │  │ Results Dashboard│   │
+│  │   + Demo     │  │   Slider     │  │ (Risk, VCDR, P)  │   │
+│  └──────┬───────┘  └──────────────┘  └──────────────────┘   │
+│         │  POST /api/v1/analyze (multipart)                 │
+└─────────┼───────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    BACKEND (FastAPI)                        │
+│                   http://localhost:8000                     │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │              3-Stage ML Pipeline                    │    │
+│  │                                                     │    │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  │    │
+│  │  │  Stage 1    │  │  Stage 2    │  │  Stage 3    │  │    │
+│  │  │ Segmentation│  │ Classification│ │   Fusion     │  │    │
+│  │  │ MiT-B2 U-Net│  │ DenseNet-121│  │  (Average)  │  │    │
+│  │  │             │  │             │  │             │  │    │
+│  │  │ • Optic Disc│  │ • Glaucoma  │  │ • VCDR + P  │  │    │
+│  │  │ • Optic Cup │  │   probability│ │ • Threshold │  │    │
+│  │  │ • VCDR      │  │ • Grad-CAM  │  │   (0.57)    │  │    │
+│  │  │ • Mask overlay│ │   heatmap   │  │ • Risk band │  │    │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                                                             │
+│  GET /api/v1/health → { status, hardware_accelerator }      │
+│  POST /api/v1/analyze → { fusion_score, diagnosis, masks }  │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    ML MODELS (PyTorch)                      │
+│                                                             │
+│  backend/weights/transunet_latest.pth  (smp.Unet mit_b2)    │
+│  backend/weights/densenet121_latest.pth (DenseNet-121)      │
+└─────────────────────────────────────────────────────────────┘`}
+              </pre>
             </div>
           </div>
         </section>
